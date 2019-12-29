@@ -1,16 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const http = require('http');
+const app = require('./app.js'); // app file include
 
-const app = express();
-const port = 3003;
+const port  = 3003;
+console.log('port => ',port);
 
-app.use(bodyParser.urlencoded({extended : true}) );
-app.use(bodyParser.json());
+const server = http.createServer(app);
+server.listen(port);
 
-app.get("/",(req,res)=>{
-	res.json({"message": "Hello World! Welcome to iAssureIT NodeJS & ReactJS API Training!"});
-});
-
-app.listen(port,()=>{
-	console.log("App is running on port "+ port +". To see the app, go to http://localhost:"+port);
-});
