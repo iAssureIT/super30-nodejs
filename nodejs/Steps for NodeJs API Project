@@ -1,0 +1,7 @@
+Steps for NodeJs API Project
+
+1. mkdir <foldername>
+2. cd <foldername> &   npm init
+3. npm install --save express body-parser mongoose
+4. create server.js & copy-paste the content. 
+5. 

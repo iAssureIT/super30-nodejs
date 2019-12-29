@@ -1,0 +1,32 @@
+Steps to Write React Program
+
+1. Call EmpList component in App.js
+
+2. Create EmpList.js file and create EmpList component
+
+3. Create EmpList.css and import that file in Emplist.js
+
+4. In EmpList => Prepare Array of objects of Empdata
+
+5. In render() function, call this array and use map function. 
+	empData.map((element,index)=>{
+		return(
+			<EmpProfile data={Empdata} />
+		)
+	});
+
+6. Create new functional component EmpProfile in new file EmpProfile.js. also create EmpProfile.css
+	function EmpProfile(props){
+		return(
+			<div>
+				<div className="profileWrapper">
+					.....
+				</div>
+			</div>
+		)
+
+	}
+
+
+7. use the data as props. 
+	e.g. props.data.name
