@@ -35,9 +35,7 @@ exports.get_employeeList = (req,res,next)=>{
 		Employee
 			.find()
 			.then((data)=>{
-		        res.status(200).json({
-		            "data" : data,
-		        });
+		        res.status(200).json({data});
 			})
 			.catch((error)=>{
 				console.log("Error while getting employee data. ", error);
