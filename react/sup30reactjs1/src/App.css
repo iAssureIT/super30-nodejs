@@ -1,0 +1,28 @@
+body{
+  background-color: #fff;
+  color: #333;
+}
+
+.mainContent{
+  background-color: #eee;
+  height: 600px;
+  padding: 15px;
+}
+
+.pageTitle{
+  font-size: 18px;
+  color: #333;
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid #aaa;
+}
+
+.page{
+	background-color: #fff;
+	border-top: 3px solid #3c8dbc;
+	height: 500px;
+}
+
+label{
+	font-weight: normal !important;
+}

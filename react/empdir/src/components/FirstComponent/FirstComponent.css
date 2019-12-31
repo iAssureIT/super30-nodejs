@@ -1,0 +1,32 @@
+.block{
+	height: 100px;
+	background-color: #ccc;
+	margin-top: -20px;
+	margin-bottom: 40px;
+	padding-top: 20px;
+	color: #333;
+}
+
+.userPic{
+	width: 100px;
+	float: left;
+	margin-left: 15px;
+	margin-top: -12px;
+	border: 3px solid #333;
+}
+
+.leftBox, .rightBox{
+	margin-left: 30px;
+	height: 80px;
+	width: 350px;
+	float: left;
+}
+
+.empAttr{
+	font-size: 15px;
+	line-height: 25px;
+}
+
+.mngBg{
+	background-color: #ffa !important;
+}

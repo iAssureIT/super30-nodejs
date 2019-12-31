@@ -1,7 +1,5 @@
 nodejs/app1/node_modules
 nodejs/empapi/node_modules
-
-
-reactjs/ecommercesite/node_modules
-reactjs/empdir/node_modules
-reactjs/super30reactjs1/node_modules
+react/ecommercesite/node_modules
+react/empdir/node_modules
+react/super30reactjs1/node_modules
