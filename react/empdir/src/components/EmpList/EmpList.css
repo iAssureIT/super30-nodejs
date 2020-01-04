@@ -21,3 +21,19 @@
 	width: 500px;
 	float: left;
 }
+
+.colText{
+	width: 100px;
+	word-wrap: normal;
+	font-size: 12px;
+}
+
+.fa{
+	cursor: pointer;
+}
+.fa-edit:hover{
+	color: #00f;
+}
+.fa-trash:hover{
+	color: #f00;
+}
