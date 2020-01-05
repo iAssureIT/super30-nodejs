@@ -18,10 +18,58 @@ export default class Employeeform extends Component{
 			err_middleName 	: "",
 			err_lastName 	: "",
 			err_dob 		: "",
+			buttonText 		: "Submit",
+			firstName		: "",
+			middleName		: "",
+			lastName		: "",
+			dob 			: "",
+			email 			: "",
+			phone 			: "",
+			pincode 		: 0,
+			heducation 	    : "",
 			gender 			: "",
-			languages 		: []
+			languages 		: [],
+			empid 			: ""
 		}
 	}
+
+	componentDidMount(){
+		var empid = this.props.match.params.empid;
+		this.setState({empid : empid});
+
+		if(empid){
+			this.setState({buttonText : "Update"});
+
+			// Fetch the Employee Data using empid. 
+			Axios.get("http://localhost:3003/api/employee/get/"+empid)
+				.then(empdata=>{
+					var emp = empdata.data.employee; 
+					console.log("emp.pincode = ",emp.pincode);
+
+					this.setState({
+						firstName : emp.fName,
+						middleName : emp.mName,
+						lastName : emp.lName,
+						dob   : emp.dob,
+						email : emp.email,
+						phone : emp.phone,
+						pincode : emp.pincode,
+						heducation : emp.highestEdu,
+						gender : emp.gender,
+						languages : emp.languages,
+					});
+				})
+				.catch((error)=>{
+					console.log("Error while getting EmpData = ", error);
+					Swal.fire("Oops...","Something went wrong <br/>"+error,"error");
+				});
+
+		}else{
+			this.setState({buttonText : "Submit"});
+		}
+	}
+
+
 
 
 	arrayRemove(arr, value) {
@@ -29,7 +77,6 @@ export default class Employeeform extends Component{
 	   return arr.filter(function(ele){
 	       return ele != value;
 	   });
-
 	}
 
 	selectLang(event){
@@ -44,21 +91,15 @@ export default class Employeeform extends Component{
 			this.setState({languages : result},()=>{console.log("this.state.languages = ",this.state.languages);});
 		}
 	}
-
 	static getDerivedStateFromProps(props, state){
 		return null;
 	}
-
-	componentDidMount(){
-	}
-
-
 	handleSubmit(event){
 		event.preventDefault();
 		var submit = true;
 
-		console.log("gender = ",this.state.gender);
-		console.log("languages = ",this.state.languages);
+
+		console.log("state values = ",this.state);
 
 		//===== Validation before Submit =====
 
@@ -73,36 +114,37 @@ export default class Employeeform extends Component{
 		
 
 
-		if(!this.refs.firstName.value.length){
-			this.setState({["err_"+this.refs.firstName.name]:"This field is required"});
+		if(!this.state.firstName.length){
+			this.setState({["err_firstName"]:"This field is required"});
 			submit = false;
 		}
-		if(!this.refs.middleName.value.length){
-			this.setState({["err_"+this.refs.middleName.name]:"This field is required"});
+		if(!this.state.middleName.length){
+			this.setState({["err_middleName"]:"This field is required"});
 			submit = false;
 		}
-		if(!this.refs.lastName.value.length){
-			this.setState({["err_"+this.refs.lastName.name]:"This field is required"});
+		if(!this.state.lastName.length){
+			this.setState({["err_lastName"]:"This field is required"});
 			submit = false;
 		}
-		if(!this.refs.dob.value.length){
-			this.setState({["err_"+this.refs.dob.name]:"This field is required"});
+		if(!this.state.dob.length){
+			this.setState({["err_dob"]:"This field is required"});
 			submit = false;
 		}
-		if(!this.refs.email.value.length){
-			this.setState({["err_"+this.refs.email.name]:"This field is required"});
+		if(!this.state.email.length){
+			this.setState({["err_email"]:"This field is required"});
 			submit = false;
 		}
-		if(!this.refs.phone.value.length){
-			this.setState({["err_"+this.refs.phone.name]:"This field is required"});
+		if(!this.state.phone.length){
+			this.setState({["err_phone"]:"This field is required"});
 			submit = false;
 		}
-		if(!this.refs.pincode.value.length){
-			this.setState({["err_"+this.refs.pincode.name]:"This field is required"});
+
+		if(this.state.pincode === 0 ){
+			this.setState({["err_pincode"]:"This field is is required"});
 			submit = false;
 		}
-		if(!this.refs.heducation.value.length){
-			this.setState({["err_"+this.refs.heducation.name]:"This field is required"});
+		if(!this.state.heducation.length){
+			this.setState({["err_heducation"]:"This field is required"});
 			submit = false;
 		}
 		if(!this.state.gender.length){
@@ -118,20 +160,21 @@ export default class Employeeform extends Component{
 			this.setState({["err_languages"]:""});			
 		}
 
-		console.log("last = ", this.state.submit);
 
 		if(submit && this.state.submit){
 			var formValues = {
-				"fName"  	: this.refs.firstName.value.trim(),
-				"mName"  	: this.refs.middleName.value.trim(),
-				"lName"  	: this.refs.lastName.value.trim(),
-				"dob"  		: this.refs.dob.value.trim(),
-				"email"  	: this.refs.email.value.trim(),
-				"phone"  	: this.refs.phone.value.trim(),
-				"heducation": this.refs.heducation.value.trim(),
-				"pincode"  	: this.refs.pincode.value.trim(),
+				"fName"  	: this.state.firstName.trim(),
+				"mName"  	: this.state.middleName.trim(),
+				"lName"  	: this.state.lastName.trim(),
+				"dob"  		: this.state.dob.trim(),
+				"email"  	: this.state.email.trim(),
+				"phone"  	: this.state.phone.trim(),
+				"heducation": this.state.heducation.trim(),
+				"pincode"  	: this.state.pincode,
 				"gender"	: this.state.gender,
 				"languages"	: this.state.languages,
+				"type"		: this.state.buttonText,
+				"empid" 	: this.state.empid,
 			};		
 
 			console.log("formValues = ",formValues);
@@ -158,15 +201,6 @@ export default class Employeeform extends Component{
 
 
 		}
-
-	}
-
-
-
-
-	dateChange(event){
-		var value = event.currentTarget.value;
-		console.log("value = ",value);
 	}
 	onlyAlpha(event){
 		/* 
@@ -179,8 +213,6 @@ export default class Employeeform extends Component{
 		*/
 		var keycode = event.which || event.keyCode;
 		var value = event.currentTarget.value;
-		console.log("value = ",value);
-		console.log("charCode = ",event.keyCode);
 		if(	(keycode >= 65 && keycode <= 90) ||
 			(keycode === 8 || keycode === 9 || keycode === 37 || keycode === 39 || keycode === 46) ){
 			return true;
@@ -263,13 +295,15 @@ export default class Employeeform extends Component{
 		}
 	}
 
-	selectChange(event){
-		var value = event.currentTarget.value;
-		console.log("value = ",value);		
-	}
 	selectGender(event){
 		var value = event.currentTarget.value;
 		this.setState({gender : value});
+	}
+
+	handleChange(event){
+		var value = event.currentTarget.value;
+		var name =  event.currentTarget.name;
+		this.setState({ [name] : value});
 	}
 
 	render(){
@@ -290,9 +324,10 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input  type="text" className="form-control" name="firstName" ref="firstName" 
-											maxLength="20"
+											maxLength="20" defaultValue={this.state.firstName}
 											onKeyDown={this.onlyAlpha.bind(this)}
 											onBlur={this.required.bind(this)}
+											onChange={this.handleChange.bind(this)}
 									/>
 								</div>
 								{this.state.err_firstName
@@ -309,8 +344,11 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input type="text" className="form-control" name="middleName" ref="middleName"
+									 	defaultValue={this.state.middleName}
 										onKeyDown={this.onlyAlpha.bind(this)}
-										onBlur={this.required.bind(this)}/>
+										onBlur={this.required.bind(this)}
+										onChange={this.handleChange.bind(this)}
+									/>
 								</div>
 								{this.state.err_middleName
 								 ?
@@ -326,8 +364,11 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input type="text" className="form-control" name="lastName" ref="lastName"
+									 	defaultValue={this.state.lastName}
 										onKeyDown={this.onlyAlpha.bind(this)}
-										onBlur={this.required.bind(this)}/>
+										onBlur={this.required.bind(this)}
+										onChange={this.handleChange.bind(this)}
+									/>
 								</div>
 								{this.state.err_lastName
 								 ?
@@ -347,8 +388,9 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input  type="date" className="form-control" name="dob" ref="dob" 
-											onChange={this.dateChange.bind(this)}
-											onBlur={this.required.bind(this)}
+											defaultValue={this.state.dob}
+											onChange={this.handleChange.bind(this)}
+											onBlur={this.required.bind(this)}											
 									/>
 								</div>
 								{this.state.err_dob
@@ -365,7 +407,9 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input  type="email" className="form-control" name="email" ref="email"
+									 		defaultValue={this.state.email}
 											onBlur={this.isEmail.bind(this)}
+											onChange={this.handleChange.bind(this)}											
 									/>
 								</div>
 								{this.state.err_email
@@ -382,7 +426,9 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input type="text" maxLength="10" className="form-control" name="phone" ref="phone"
+											defaultValue={this.state.phone}
 											onBlur={this.isPhoneNumber.bind(this)}
+											onChange={this.handleChange.bind(this)}											
 									/>
 								</div>
 								{this.state.err_phone
@@ -405,9 +451,9 @@ export default class Employeeform extends Component{
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<select className="form-control" name="heducation" ref="heducation"
-											defaultValue=""
+											defaultValue={this.state.heducation}
 											onBlur={this.mustSelect.bind(this)}
-											onChange={this.selectChange.bind(this)}
+											onChange={this.handleChange.bind(this)}
 									>
 										<option disabled value=""> -- Select -- </option>
 										<option> 10th </option>
@@ -449,12 +495,14 @@ export default class Employeeform extends Component{
 						</div>
 						<div className="field col-lg-4 col-md-4 col-sm-4 col-xs-12">
 							<div className="form-group">
-								<label htmlFor="gender"> Pincode  <span className="asterik">*</span> </label> <br />
+								<label htmlFor="gender"> Pincode {this.state.pincode} <span className="asterik">*</span> </label> <br />
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<input type="number" min="100000" max="999999" className="form-control"  
 										   name="pincode" ref="pincode"
+									 	   value={this.state.pincode}
 										   onBlur={this.pincodeValid.bind(this)}
+										   onChange={this.handleChange.bind(this)}
 									/>
 								</div>
 								{this.state.err_pincode
@@ -505,7 +553,7 @@ export default class Employeeform extends Component{
 						</div>
 
 						<div className="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-							<button className="btn btn-primary col-lg-4 subButton pull-right" onClick={this.handleSubmit.bind(this)}> Submit {/* <span className="lg-hidden"> <Loader /> </span> */}</button>
+							<button className="btn btn-primary col-lg-4 subButton pull-right" onClick={this.handleSubmit.bind(this)}> {this.state.buttonText} </button>
 						</div>					
 
 					</div>

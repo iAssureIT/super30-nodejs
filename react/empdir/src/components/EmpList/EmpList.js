@@ -24,7 +24,7 @@ export default class EmpList extends Component{
 	}
 
 	getEmpData(){
-		Axios.get("http://localhost:3003/api/employee/get")
+		Axios.get("http://localhost:3003/api/employee/get/list")
 			 .then((response)=>{
 			 	console.log("response = ",response.data);
 			 	if(response.data.employees){
@@ -39,10 +39,6 @@ export default class EmpList extends Component{
 			 });		
 	}
 
-	editEmp(event){
-		event.preventDefault();
-
-	}
 
 	deleteEmp(event){
 		event.preventDefault();	
@@ -137,7 +133,7 @@ export default class EmpList extends Component{
 												<td>{emp.pincode}</td>
 												<td> <div className="colText"> {emp.languages.toString().replace(/,/g, ', ')} </div> </td>
 												<td> 
-													<i id={"e-"+emp._id} className="fa fa-edit" title="Click to Edit" onClick={this.editEmp.bind(this)}> </i> &nbsp;&nbsp;
+													<a href={"/empform/"+emp._id}> <i id={"e-"+emp._id} className="fa fa-edit" title="Click to Edit"> </i> </a> &nbsp;&nbsp;
 													<i id={"d-"+emp._id} className="fa fa-trash" title="Click to Delete" onClick={this.deleteEmp.bind(this)}> </i>
 												</td>
 											</tr>

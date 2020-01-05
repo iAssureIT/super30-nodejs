@@ -30,10 +30,11 @@ export default class Layout extends Component{
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 page">
 
 				    		<Switch>
-				    			<Route exact path="/" 				 component={Home} /> 
-				    			<Route exact path="/empform" 		 component={EmployeeForm} />
-				    			<Route exact path="/empprofile/:empid"		 component={EmpProfile} />
-				    			<Route exact path="/emplist" 		component={EmpList} />
+				    			<Route exact path="/" 				 	component={Home} /> 
+				    			<Route exact path="/empform" 		 	component={EmployeeForm} />
+				    			<Route exact path="/empform/:empid" 	component={EmployeeForm} />
+				    			<Route exact path="/empprofile/:empid"	component={EmpProfile} />
+				    			<Route exact path="/emplist" 			component={EmpList} />
 				    			<Route component={PageNotFound} />
 				    		</Switch>
 
