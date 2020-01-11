@@ -79,6 +79,32 @@ exports.get_employeeList = (req,res,next)=>{
 		Employee
 			.find()
 			.then((employees)=>{
+				// console.log("employees = ", employees);
+		        res.status(200).json({employees});
+			})
+			.catch((error)=>{
+				console.log("Error while getting employee data. ", error);
+				res.status(500).json({
+					"message" : "Some error occured while getting employee data",
+					"error"   : error
+				})
+			});
+};
+
+exports.get_empHighEduList = (req,res,next)=>{
+		console.log("Inside get_empHighEduList function");
+		var highEdu = req.params.highEdu.replace("-"," ");
+		console.log("highEdu = ",highEdu);
+
+		if(highEdu === "Show All"){
+			var selector = {};
+		}else{
+			var selector = {highestEdu : highEdu};
+		}
+
+		Employee
+			.find(selector)
+			.then((employees)=>{
 				console.log("employees = ", employees);
 		        res.status(200).json({employees});
 			})

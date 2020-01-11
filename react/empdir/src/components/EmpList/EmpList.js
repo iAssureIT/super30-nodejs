@@ -39,6 +39,22 @@ export default class EmpList extends Component{
 			 });		
 	}
 
+	getHighEduEmp(highEdu){
+		Axios.get("http://localhost:3003/api/employee/get/list/"+highEdu)
+			 .then((response)=>{
+			 	console.log("response = ",response.data);
+			 	if(response.data.employees){
+			 		this.setState({
+			 			empDetails : response.data.employees,
+			 		});
+			 	}
+			 })
+			 .catch((error)=>{
+			 	console.log("Error during get Data = ", error);
+			 	Swal.fire("Oops...","Something went wrong! <br/>"+error, "error");
+			 });		
+	}
+
 
 	deleteEmp(event){
 		event.preventDefault();	
@@ -95,12 +111,39 @@ export default class EmpList extends Component{
 		})		
 	}
 
+	highestEdu(event){
+		var highEdu = event.currentTarget.value.replace(" ","-");
+		this.getHighEduEmp(highEdu);
+	}
+
 	render(){
 		return(
 
 	    	<div className="row">
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<h3> Employee List </h3>
+
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div className="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+							<label> Highest Education </label>
+							<select className="form-control" name="heducation" ref="heducation"
+									defaultValue=""
+									onChange`={this.highestEdu.bind(this)}
+							>
+								<option disabled value=""> -- Select -- </option>
+								<option> Show All </option>
+								<option> 10th </option>
+								<option> 12th </option>
+								<option> Diploma </option>
+								<option> Bachelors Degree </option>
+								<option> Masters Degree </option>
+								<option> PhD </option>
+							</select>
+						</div>
+					</div>
+
+					<br/><br/><br/><br/>
+
 					<table className="table table-stripped table-hovered table-bordered"> 
 						<thead> 
 							<tr>

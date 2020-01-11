@@ -83,8 +83,18 @@ export default class Employeeform extends Component{
 
 		var value = event.currentTarget.value;
 		var checked = event.currentTarget.checked;
+		var selectedLangs = [] ;
+
+		console.log(value , " | checked = ", checked);
+
 		if(checked){
+			selectedLangs.push(value);
 			this.state.languages.push(value);
+			// console.log("selectedLangs = ",selectedLangs);
+			this.setState({languages : [...this.state.languages]},()=>{
+				console.log("this.state.languages = ",this.state.languages);
+			});
+
 		}else{
 			var result = this.arrayRemove(this.state.languages, value);
 			console.log("result = ",result);
@@ -315,7 +325,6 @@ export default class Employeeform extends Component{
 					</div>
 				</div>
 				<form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 empform">
-
 					<div className="formRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
 						<div className="field col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -447,11 +456,11 @@ export default class Employeeform extends Component{
 
 						<div className="field col-lg-4 col-md-4 col-sm-4 col-xs-12">
 							<div className="form-group">
-								<label htmlFor="heducation"> Highest Education  <span className="asterik">*</span> </label>
+								<label htmlFor="heducation"> Highest Education<span className="asterik">*</span> </label>
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-user"> </i> </span>
 									<select className="form-control" name="heducation" ref="heducation"
-											defaultValue={this.state.heducation}
+											value={this.state.heducation}
 											onBlur={this.mustSelect.bind(this)}
 											onChange={this.handleChange.bind(this)}
 									>
@@ -478,11 +487,13 @@ export default class Employeeform extends Component{
 						<div className="field col-lg-4 col-md-4 col-sm-4 col-xs-12">
 							<div className="form-group">
 								<label htmlFor="gender"> Gender  <span className="asterik">*</span> </label> <br />
-								<input type="radio" name="gender" ref="gender" value="M"
+								<input type="radio" name="gender" ref="gender" value="M" 
+									   checked={this.state.gender === "M" ? "checked" : false}
 									   onChange={this.selectGender.bind(this)}
 								/> Male  &nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="radio" name="gender" ref="gender"  value="F"
-									   onChange={this.selectGender.bind(this)}
+								<input type="radio" name="gender" ref="gender"  value="F" 
+									   checked={this.state.gender === "F" ? "checked" : false}
+ 									   onChange={this.selectGender.bind(this)}
 								/> Female 
 							</div>
 								{this.state.err_gender
@@ -521,23 +532,29 @@ export default class Employeeform extends Component{
 								<label htmlFor="lastName"> Languages  <span className="asterik">*</span> </label>  <br />
 								<div className="field col-lg-6 col-md-6 col-sm-6 col-xs-6">
 									<input type="checkbox" name="language" ref="language" value="Marathi" 
+										   checked={this.state.languages.includes("Marathi") ? "checked" : ""}
 										   onChange={this.selectLang.bind(this)}
 									/> Marathi  <br />
 									<input type="checkbox" name="language" ref="language" value="Hindi"
+										   checked={this.state.languages.includes("Hindi") ? "checked" : false}
 										   onChange={this.selectLang.bind(this)}
 									/> Hindi    <br />
 									<input type="checkbox" name="language" ref="language" value="English"
+										   checked={this.state.languages.includes("English") ? "checked" : false}
 										   onChange={this.selectLang.bind(this)}
 									/> English  <br />
 								</div>
 								<div className="field col-lg-6 col-md-6 col-sm-6 col-xs-6">
 									<input type="checkbox" name="language" ref="language" value="Marwadi" 
+										   checked={this.state.languages.includes("Marwadi") ? "checked" : false}
 										   onChange={this.selectLang.bind(this)}
 									/> Marwadi  <br />
 									<input type="checkbox" name="language" ref="language" value="Bhojpuri"
+										   checked={this.state.languages.includes("Bhojpuri") ? "checked" : false}
 										   onChange={this.selectLang.bind(this)}
 									/> Bhojpuri    <br />
 									<input type="checkbox" name="language" ref="language" value="Sanskrit"
+										   checked={this.state.languages.includes("Sanskrit") ? "checked" : false}
 										   onChange={this.selectLang.bind(this)}
 									/> Sanskrit  <br />
 								</div>
