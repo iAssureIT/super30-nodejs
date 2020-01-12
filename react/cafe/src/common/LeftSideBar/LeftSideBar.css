@@ -1,0 +1,30 @@
+.leftSideBar{
+	height: 1030px;
+	background-color: #222d32;
+}
+
+.leftmenu{
+	list-style: none;
+	color: #fff;
+	margin-top: 50px;
+	margin-left: -10px; 
+	padding: 0px;
+	border-top: 1px solid #999;
+}
+
+.leftmenu li{
+	padding: 10px 20px;
+	border-bottom: 1px solid #999;
+	transition: 0.3s;
+}
+
+.leftmenu li:hover{
+	background-color: #3c8dbc;
+	padding-left: 40px;
+	font-weight: bold;
+}
+
+.leftmenu li a{
+	color: #fff;
+	text-decoration: none;
+}

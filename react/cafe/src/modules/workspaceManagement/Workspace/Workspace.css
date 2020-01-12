@@ -1,0 +1,36 @@
+.workspaceForm{
+	padding: 0px;
+}
+.amenities{
+	font-size: 12px;
+}
+.subButton{
+	border-radius: 0px !important;
+	transition: 0.5s;
+}
+.subButton:hover{
+	background: transparent !important;
+	border: solid 1px #3c8dbc !important;
+	color: #3c8dbc !important;
+}
+
+.thumbnailImg{
+	width: 150px; 
+	float: left;
+}
+.delImage{
+	display: block;
+	margin-top: -10px;
+	margin-left: -5px;
+	float: left;
+}
+
+.delImage .fa{
+	color: #600 !important;
+	cursor: pointer;
+	font-size: 20px;	
+}
+
+.delImage .fa:hover{
+	color: #f00 !important;
+}

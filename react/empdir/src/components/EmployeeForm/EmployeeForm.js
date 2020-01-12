@@ -484,6 +484,7 @@ export default class Employeeform extends Component{
 
 							</div>
 						</div>
+						
 						<div className="field col-lg-4 col-md-4 col-sm-4 col-xs-12">
 							<div className="form-group">
 								<label htmlFor="gender"> Gender  <span className="asterik">*</span> </label> <br />
