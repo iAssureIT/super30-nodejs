@@ -125,18 +125,12 @@ export default class Workspace extends Component{
 				console.log("Error in Image Upload = ", error);
 				Swal.fire("Oops...","Something went wrong <br/>"+error,"error");
 			});
-	
-
-
-		this.setState({[name] : new File( [file], file.name ) });	
 	}
 
 	deleteImage(event){		
 		var formValues = {
 			filepath : this.state.cafeImage
 		};
-		console.log("this.state.cafeImage = ",this.state.cafeImage);
-		console.log("formValues.filepath = ",formValues.filepath);
 
 		Axios.post("http://localhost:3003/api/cafe/delete-image",formValues)
 			.then((response)=>{
@@ -474,6 +468,7 @@ export default class Workspace extends Component{
 							</div>
 						</div>
 					</div>
+
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						
 						{this.state.cafeImage 
@@ -489,7 +484,6 @@ export default class Workspace extends Component{
 									<div className="input-group">
 										<span className="input-group-addon"> <i className="fa fa-image"> </i> </span>
 										<input  type="file" className="form-control" name="cafeImage" ref="cafeImage" 
-												maxLength="30" 
 												onChange={this.uploadFile.bind(this)} 
 										required/>
 									</div>

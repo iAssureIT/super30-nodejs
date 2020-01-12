@@ -1,0 +1,10 @@
+.profileheader{
+  border-bottom: 2px solid #ddd;
+}
+.schoolinfo{
+	text-align: right;
+}
+.profilephoto{
+	width: 90%;
+	margin-top:30px;
+}

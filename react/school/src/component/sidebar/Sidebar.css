@@ -1,0 +1,11 @@
+.sidebarsection{
+	position:fixed;
+	background-color:#222d32;
+	color: #fff;
+	height: calc(100vh - 60px);
+   	top: 60px;
+   	width: inherit;
+}
+.h2sidebar{
+	padding:30px 0px;
+}
