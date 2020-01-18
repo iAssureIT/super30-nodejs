@@ -1,0 +1,36 @@
+
+.modelSubmit{
+	margin-top: 24px;
+	margin-left: 0px
+}
+
+.noDataMsg{
+	text-align: center;
+	font-size: 18px;
+	color: #f66;
+	padding: 30px;
+	border: 1px solid #f66;
+	margin-bottom: 100px;
+	margin-top: 25px;
+}
+
+.noDataMsg .fa{
+	font-size: 30px;
+	color: #f66 !important;
+}
+
+.latestRow{
+	background-color: #ff9;
+}
+
+.fa-trash, .fa-edit{
+	cursor: pointer;
+}
+
+.fa-trash:hover{
+	color: #f66 !important;
+}
+
+.fa-edit:hover{
+	color: #66f !important;
+}
