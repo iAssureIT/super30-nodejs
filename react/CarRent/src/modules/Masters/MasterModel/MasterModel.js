@@ -11,27 +11,31 @@ export default class MasterBrand extends Component{
 		this.state = {
 			carBrand : "",
 			carModel : "",
+			allModels : [],
 			allBrands : [],
+			selectedBrand : "",
 			action : "Insert"
 		}
 	}
 
 	componentDidMount(){
-		// var brand_id = this.props.match.params.brand_id;
-		// if(brand_id){
-		// 	this.setState({brand_id : brand_id, action:"Update"});
-		// 	this.getOneCarBrand(brand_id);
-		// }
+		if(this.props.params.type === "model"){
+			this.setState({model_id : this.props.params.id, action:"Update"});
+			this.getOneCarModel(this.props.params.id);
+		}
 		this.getCarBrands();
+		this.getCarModels();
 	}
 
-	getOneCarBrand(brand_id){
-
-		Axios.get("http://localhost:3003/api/carbrand/get/one/"+brand_id)
+	getOneCarModel(brand_id){
+		Axios.get("http://localhost:3003/api/carmodel/get/one/"+brand_id)
 			.then(response => {
 				if(response.data){
-					console.log("response.data = ",response.data);
-					this.setState({carBrand :response.data.carBrandObj.brand});
+					console.log("getOneCarModel = ",response.data);
+					this.setState({
+						carModel 	 : response.data.carModelObj.model,
+						selectedBrand : response.data.carModelObj.brand_id + "-" + response.data.carModelObj.brand,
+					});
 				}
 			})
 			.catch(error=>{
@@ -41,14 +45,26 @@ export default class MasterBrand extends Component{
 
 	}
 
+	getCarModels(){
+		Axios.get("http://localhost:3003/api/carmodel/get/list")
+			.then(response => {
+				console.log("getCarModels = ", response.data);
+				this.setState({allModels : response.data.carModels});
+			})
+			.catch(error=>{
+				console.log("Error while getting list of all Car Models", error);
+				Swal.fire('Oops...', 'Something went wrong!', 'error')
+			});		
+	}
+
 	getCarBrands(){
 		Axios.get("http://localhost:3003/api/carbrand/get/list/atoz")
 			.then(response => {
-				console.log(response.data);
+				console.log("getCarBrands = ", response.data);
 				this.setState({allBrands : response.data.carBrands});
 			})
 			.catch(error=>{
-				console.log("Error while Saving Car Brand", error);
+				console.log("Error while getting list of all Car Brands", error);
 				Swal.fire('Oops...', 'Something went wrong!', 'error')
 			});		
 	}
@@ -58,35 +74,32 @@ export default class MasterBrand extends Component{
 		this.setState({ [name] : event.currentTarget.value });
 	}
 
-	// handleSelect(event){
-
-	// 	this.setState({ 
-	// 		brand_id : event.currentTarget.id
-	// 	});
-	// }
-
 	handleSubmit(event){
 		event.preventDefault();
+		var carBrandAndId = this.state.selectedBrand.split("-");
+
 		var formValues = {
-			carBrand_id : this.state.carBrand,
+			carBrand_id : carBrandAndId[0],
+			carBrand 	: carBrandAndId[1],
 			carModel 	: this.state.carModel,
 			action 		: this.state.action,
+			model_id 	: this.props.params.id ? this.props.params.id : "",
 		}
 
-		console.log("formValues = ",formValues);
+		// console.log("formValues = ",formValues);
 
 		Axios.post("http://localhost:3003/api/carmodel/post",formValues)
 			.then(response =>{
 				console.log("response = ", response.data);
 				if(this.state.action === "Insert"){
 					Swal.fire('Congrats!','Car Model Submitted Successfully!' , 'success');	
-					this.setState({action: "Insert", carModel: "", carBrand:"" });
+					this.setState({action: "Insert", carModel: "", selectedBrand:"" });
 				}else{
 					Swal.fire('Congrats!','Car Model Updated Successfully!' , 'success');	
-					this.setState({action: "Insert", brand_id: "", carBrand:"" });
-					this.props.history.push("/master-brand");
+					this.setState({action: "Insert", carModel: "", selectedBrand:"" });
+					this.props.history.push("/master-brand-model");
 				}
-				this.getCarBrands();
+				this.getCarModels();
 			})
 			.catch(error=>{
 				console.log("Error while Saving Car Brand", error);
@@ -94,7 +107,7 @@ export default class MasterBrand extends Component{
 			});
 	}
 
-	deleteCarBrand(event){
+	deleteCarModel(event){
 		var id = event.currentTarget.id;
 		var formValues = {
 			id: id
@@ -112,14 +125,14 @@ export default class MasterBrand extends Component{
 		}).then((result) => {
 		  if (result.value) {
 
-			Axios.post("http://localhost:3003/api/carbrand/delete",formValues)
+			Axios.post("http://localhost:3003/api/carmodel/delete",formValues)
 				.then(response =>{
 					console.log("response = ", response.data);
-					Swal.fire('Deleted!', 'Car Brand Deleted Successfully!', 'success');
-					this.getCarBrands();
+					Swal.fire('Deleted!', 'Car Model Deleted Successfully!', 'success');
+					this.getCarModels();
 				})
 				.catch(error=>{
-					console.log("Error while Deleting Car Brand", error);
+					console.log("Error while Deleting Car Model", error);
 					Swal.fire('Oops...', 'Something went wrong!', 'error')
 				});
 
@@ -131,10 +144,10 @@ export default class MasterBrand extends Component{
 		    )
 		  }
 		})		
-
 	}
 
 	render(){
+		console.log("this.state.selectedBrand = ",this.state.selectedBrand);
 
 		return(
 			<section className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -146,11 +159,12 @@ export default class MasterBrand extends Component{
 
 								<div className="col-lg-4 col-lg-offset-1 col-md-4 col-sm-6 col-xs-12">
 									<div className="form-group">
-										<label htmlFor="carBrand"> Car Brand <span className="asterik">*</span> </label>
+										<label htmlFor="selectedBrand"> Car Brand <span className="asterik">*</span> </label>
 										<div className="input-group">
 											<span className="input-group-addon"> <i className="fa fa-car"> </i> </span>
-											<select className="form-control" name="carBrand" ref="carBrand" 
+											<select className="form-control" name="selectedBrand" ref="selectedBrand" 
 													onChange={this.handleChange.bind(this)}
+													value={this.state.selectedBrand}
 											>
 												<option> -- Select Brand -- </option>
 												{
@@ -158,7 +172,7 @@ export default class MasterBrand extends Component{
 													?
 														this.state.allBrands.map((elem, index)=>{
 															return(
-																<option key={index} value={elem._id}> {elem.brand} </option>
+																<option key={index} value={elem._id+"-"+elem.brand}> {elem.brand} </option>
 															)
 
 														})
@@ -197,20 +211,21 @@ export default class MasterBrand extends Component{
 
 						{/* ===========  Table ============ */} 
 						<div className="col-lg-6 col-lg-offset-3 col-md-12 col-sm-12 col-xs-12">
-							<h4> Car Brands </h4>
-							{this.state.allBrands.length > 0
+							<h4> Car Models </h4>
+							{this.state.allModels.length > 0
 							 ?
 								<table className="table table-hovered table-bordered table-stripped ">
 									<thead>
 										<tr className="active">
 											<th> Sr No </th>
 											<th> Car Brand </th>
+											<th> Model </th>
 											<th> Actions </th>
 										</tr>
 									</thead>
 
 									<tbody>
-										{this.state.allBrands.map((element,index)=>{
+										{this.state.allModels.map((element,index)=>{
 											if(index === 0){
 												var rowClass = "latestRow";
 											}else{
@@ -220,10 +235,11 @@ export default class MasterBrand extends Component{
 												<tr key={index} className={rowClass}>
 													<td> {index+1} </td>
 													<td> {element.brand} </td>
+													<td> {element.model} </td>
 													<td className="text-center">  
-														<a href={"/master-brand/"+element._id}> <i className="fa fa-edit"> </i> </a>
+														<a href={"/master-brand-model/model/"+element._id}> <i className="fa fa-edit"> </i> </a>
 														&nbsp;&nbsp;
-														<i className="fa fa-trash" id={element._id} onClick={this.deleteCarBrand.bind(this)}> </i>
+														<i className="fa fa-trash" id={element._id} onClick={this.deleteCarModel.bind(this)}> </i>
 													</td>
 												</tr>												
 											)			
@@ -235,7 +251,7 @@ export default class MasterBrand extends Component{
 							 :
 							 	<div className="noDataMsg"> 
 							 		<i className="fa fa-car"> </i> <br />
-							 		Please Add Car Brand 
+							 		Please Add Car Model 
 							 	</div>
 							 }
 						</div>

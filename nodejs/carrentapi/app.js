@@ -37,11 +37,13 @@
 	const CarCategoryRoutes	= require("./routes/carcategory.js"); 	
 	const CarBrandRoutes	= require("./routes/carbrand.js"); 	
 	const CarModelRoutes	= require("./routes/carmodel.js"); 	
+	const CarMasterRoutes	= require("./routes/carmaster.js"); 	
 
 	app.use("/api/cafe",CafeRoutes);
 	app.use("/api/carcategory",CarCategoryRoutes);
 	app.use("/api/carbrand",CarBrandRoutes);
 	app.use("/api/carmodel",CarModelRoutes);
+	app.use("/api/carmaster",CarMasterRoutes);
 
 
 

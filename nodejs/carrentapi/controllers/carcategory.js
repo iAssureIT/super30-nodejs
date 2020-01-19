@@ -103,6 +103,33 @@ exports.get_carCategory_list = (req,res,next)=>{
 
 }
 
+exports.get_carCategory_list_atoz = (req,res,next)=>{
+
+	CarCategory.find()
+			   .sort({carCategory : 1})
+			   .then(carCategories => {
+			   		if(carCategories.length > 0){
+				   		res.status(200).json({
+				   			message : "Data Available",
+				   			carCategories : carCategories
+				   		});			   			
+			   		}else{
+				   		res.status(200).json({
+				   			message : "Data Not Found",
+				   			carCategories : carCategories
+				   		});			   			
+			   		}
+			   })
+				.catch((error)=>{
+					console.log("error while getting Data = ", error);
+					res.status(500).json({
+						"message" : "Some error occured while getting CarCategory List",
+						"error"   : error
+					})
+				});
+
+}
+
 exports.get_oneCarCategory = (req,res,next)=>{
 	var catg_id = req.params.catg_id;
 

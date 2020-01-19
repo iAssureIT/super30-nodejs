@@ -6,22 +6,22 @@ import './MasterBrand.css';
 
 export default class MasterBrand extends Component{
 
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {
 			carBrand : "",
 			allBrands : [],
 			brand_id : "",
 			action : "Insert"
 		}
+
 	}
 
 	componentDidMount(){
-		// var brand_id = this.props.match.params.brand_id;
-		// if(brand_id){
-		// 	this.setState({brand_id : brand_id, action:"Update"});
-		// 	this.getOneCarBrand(brand_id);
-		// }
+		if(this.props.params.type === "brand"){
+			this.setState({brand_id : this.props.params.id, action:"Update"});
+			this.getOneCarBrand(this.props.params.id);
+		}
 		this.getCarBrands();
 	}
 
@@ -75,13 +75,13 @@ export default class MasterBrand extends Component{
 					Swal.fire('Congrats!','Car Brand Submitted Successfully!' , 'success');	
 				}else{
 					Swal.fire('Congrats!','Car Brand Updated Successfully!' , 'success');	
-					this.props.history.push("/master-brand");
+					this.props.history.push("/master-brand-model");
 				}
 				this.setState({action: "Insert", brand_id: "", carBrand:"" });
 				this.getCarBrands();
 			})
 			.catch(error=>{
-				console.log("Error while Saving Car Brand", error);
+				console.log("Error while Updating Car Brand", error);
 				Swal.fire('Oops...', 'Something went wrong!', 'error')
 			});
 	}
@@ -180,7 +180,7 @@ export default class MasterBrand extends Component{
 													<td> {index+1} </td>
 													<td> {element.brand} </td>
 													<td className="text-center">  
-														<a href={"/master-brand/"+element._id}> <i className="fa fa-edit"> </i> </a>
+														<a href={"/master-brand-model/brand/"+element._id}> <i className="fa fa-edit"> </i> </a>
 														&nbsp;&nbsp;
 														<i className="fa fa-trash" id={element._id} onClick={this.deleteCarBrand.bind(this)}> </i>
 													</td>

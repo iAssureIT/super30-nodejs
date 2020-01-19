@@ -36,6 +36,7 @@ export default class Layout extends Component{
 					    			<Route exact path="/master-category" component={MasterCategory} /> 
 					    			<Route exact path="/master-category/:catg_id" component={MasterCategory} /> 
 					    			<Route exact path="/master-brand-model" component={BrandModel} /> 
+					    			<Route exact path="/master-brand-model/:type/:id" component={BrandModel} /> 
 					    			<Route exact path="/master-cars" component={MasterCars} /> 
 					    			<Route component={PageNotFound} />
 					    		</Switch>

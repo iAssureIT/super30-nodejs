@@ -31,7 +31,7 @@ exports.insert_carBrand = (req,res,next)=>{
 			console.log("Inside update_carBrand function = ", req.body);
 
 			CarBrand
-				.update({_id : ObjectId(req.body.brand_id)},{$set : {brand : req.body.carBrand} })
+				.update({_id : req.body.brand_id},{$set : {brand : req.body.carBrand} })
 				.then(response=>{
 			        res.status(200).json({
 			            "message": "CarBrand updated Successfully",

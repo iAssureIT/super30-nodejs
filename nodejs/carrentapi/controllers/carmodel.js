@@ -9,6 +9,7 @@ exports.insert_carModel = (req,res,next)=>{
 			var carModel = new CarModel({
 				_id 			: new mongoose.Types.ObjectId(),
 				brand_id  		: req.body.carBrand_id,
+				brand 	 		: req.body.carBrand,
 				model  			: req.body.carModel,
 				createdAt 		: new Date(),
 				createdBy 		: "Ashish Naik"
@@ -32,7 +33,7 @@ exports.insert_carModel = (req,res,next)=>{
 			console.log("Inside update_carModel function = ", req.body);
 
 			CarModel
-				.update({_id : ObjectId(req.body.model_id)},{$set : {model : req.body.carModel} })
+				.update({_id : req.body.model_id},{$set : {model : req.body.carModel} })
 				.then(response=>{
 			        res.status(200).json({
 			            "message": "CarModel updated Successfully",
@@ -77,7 +78,7 @@ exports.delete_carModel = (req,res,next) =>{
 
 exports.get_carModel_list = (req,res,next)=>{
 
-	CarModel.find()
+		CarModel.find()
 			   .sort({createdAt : -1})
 			   .then(carModels => {
 			   		if(carModels.length > 0){
@@ -104,7 +105,7 @@ exports.get_carModel_list = (req,res,next)=>{
 
 exports.get_carModel_list_atoz = (req,res,next)=>{
 
-		CarModel.find()
+		CarModel.find({brand : req.params.brand})
 			   .sort({model : 1})
 			   .then(carModels => {
 			   		if(carModels.length > 0){
