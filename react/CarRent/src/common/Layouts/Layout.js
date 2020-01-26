@@ -13,6 +13,10 @@ import BrandModel 		from '../../modules/Masters/BrandModel/BrandModel.js';
 import MasterCars 		from '../../modules/Masters/MasterCars/MasterCars.js';
 
 
+import Signup 			from '../../security/Signup/Signup.js';
+import Login 			from '../../security/Login/Login.js';
+
+
 
 
 export default class Layout extends Component{
@@ -32,6 +36,9 @@ export default class Layout extends Component{
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 page">
 							<div className="row">
 					    		<Switch>
+					    			<Route exact path="/signup" component={Signup} /> 
+					    			<Route exact path="/login" component={Login} /> 
+
 					    			<Route exact path="/" component={Dashboard} /> 
 					    			<Route exact path="/master-category" component={MasterCategory} /> 
 					    			<Route exact path="/master-category/:catg_id" component={MasterCategory} /> 

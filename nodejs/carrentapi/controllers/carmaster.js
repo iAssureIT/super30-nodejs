@@ -1,6 +1,6 @@
 const mongoose 		= require('mongoose');
 const CarMaster 	= require('../models/carmaster.js');
-
+const Fs = require('fs');
 
 exports.insert_carMaster = (req,res,next)=>{
 
@@ -170,5 +170,36 @@ exports.upload_registrationPic = (req,res,next) => {
 	return res.status(200).json({
 		filepath : req.file.path
 	});
+
+}
+exports.upload_insurancePic = (req,res,next) => {
+
+	console.log("req.files = ", req.files);
+
+	return res.status(200).json({
+		filepath : req.file.path
+	});
+
+}
+
+exports.delete_carImage = (req,res,next) => {
+	console.log("req.body = ", req.body);
+
+	var filepath = req.body.filepath;
+	Fs.unlink(filepath, (error)=>{
+		if(error){
+			 res.status(401).json({
+				message : "File Can Not Be Deleted",
+				error : error
+			});	
+		}else{
+			res.status(200).json({
+				message : "File Deleted"
+			});	
+		}
+
+	} );
+	
+	
 
 }

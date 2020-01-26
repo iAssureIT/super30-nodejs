@@ -86,7 +86,7 @@ export default class MasterBrand extends Component{
 			model_id 	: this.props.params.id ? this.props.params.id : "",
 		}
 
-		// console.log("formValues = ",formValues);
+		console.log("formValues = ",formValues);
 
 		Axios.post("http://localhost:3003/api/carmodel/post",formValues)
 			.then(response =>{

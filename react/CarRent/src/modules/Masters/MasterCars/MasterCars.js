@@ -16,7 +16,7 @@ export default class MasterCars extends Component{
 			vehicleNumber 	: "",
 			totalSeats 		: "",
 			transmission 	: "",
-			registrationPic 	: "",
+			registrationPic 	: [],
 			insurancePic 			: "",
 			registrationValidityDate : "",
 			insuranceValidityDate 	 : "",
@@ -24,6 +24,7 @@ export default class MasterCars extends Component{
 			allBrands : [],
 			allModels : [],
 			action: "Insert",
+			fileArray : [],
 		}
 	}
 
@@ -88,20 +89,40 @@ export default class MasterCars extends Component{
 		var formValues = new FormData();
 		formValues.append("registrationPic",file);
 
-		Axios.post("http://localhost:3003/api/carMaster/post-image", formValues)
+		Axios.post("http://localhost:3003/api/carMaster/post-regimage", formValues)
 			.then(response=>{
 				console.log("file upload response = ", response.data);
-				this.setState({ "registrationPic" : response.data.filepath},
-					() => {
-						console.log("registrationPic = ",this.state.registrationPic);
-					}
-					);
+				var fileArray = this.state.registrationPic; 
+				fileArray.push(response.data.filepath);
+				this.setState({registrationPic : fileArray});
+
+				console.log("registrationPic = ",this.state.registrationPic);
 			})
 			.catch(error=>{
 				console.log("Error while uploading file", error);
 				Swal.fire('Oops...', 'Something went wrong!', 'error');
 			});		
 
+	}
+
+	uploadInsurancePic(event){
+		var files = event.currentTarget.files;
+		var formValues = new FormData();
+		formValues.append("insurancePics",files);
+
+		Axios.post("http://localhost:3003/api/carMaster/post-insimage", formValues)
+			.then(response=>{
+				console.log("file upload response = ", response.data);
+				var fileArray = this.state.insurancePic; 
+				fileArray.push(response.data.filepath);
+				this.setState({registrationPic : fileArray});
+
+				console.log("registrationPic = ",this.state.registrationPic);
+			})
+			.catch(error=>{
+				console.log("Error while uploading file", error);
+				Swal.fire('Oops...', 'Something went wrong!', 'error');
+			});		
 
 	}
 
@@ -131,6 +152,28 @@ export default class MasterCars extends Component{
 				Swal.fire('Oops...', 'Something went wrong!', 'error')
 			});		
 
+
+	}
+
+	delImage(event){		
+		var formValues = {
+			filepath : event.currentTarget.id
+		}
+
+		Axios.post("http://localhost:3003/api/carmaster/delimage",formValues)
+			.then(response =>{
+				var i = this.state.registrationPic.indexOf(formValues.filepath);
+				var fileArray = this.state.registrationPic;
+				fileArray.splice(i,1);
+
+				this.setState({
+					registrationPic : fileArray
+				})
+			})
+			.catch(error=>{
+				console.log("Error while deleting image", error);
+				Swal.fire('Oops...', 'Something went wrong!', 'error')
+			});		
 
 	}
 
@@ -307,9 +350,23 @@ export default class MasterCars extends Component{
 						</div>						
 						
 						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-							<div className="form-group">
-								<img src={"http://localhost:3003/"+this.state.registrationPic} alt="" className="regPic"/>
-							</div>
+							{
+								this.state.registrationPic.length > 0 
+								?
+									this.state.registrationPic.map( (elem,index)=>{
+										return(
+											<div key={index}>
+												<img src={"http://localhost:3003/"+elem} alt="" className="regPic"/>
+												<div className="delImage" title="Delete This Image" 
+													id={elem}
+													onClick={this.delImage.bind(this)}
+												> &times; </div> 
+											</div>	
+										)
+									} )
+								:
+									null
+							}
 						</div>						
 						
 					</div>
@@ -332,8 +389,8 @@ export default class MasterCars extends Component{
 								<label htmlFor="insurancePic"> Insurance Proof <span className="asterik">*</span> </label>
 								<div className="input-group">
 									<span className="input-group-addon"> <i className="fa fa-car"> </i> </span>
-									<input type="file" className="form-control" name="insurancePic" 
-											onChange={this.handleChange.bind(this)}
+									<input type="file" multiple="multiple" className="form-control" name="insurancePic" 
+											onChange={this.uploadInsurancePic.bind(this)}
 									/>
 								</div>
 							</div>

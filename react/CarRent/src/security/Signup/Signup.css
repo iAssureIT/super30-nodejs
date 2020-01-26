@@ -1,0 +1,15 @@
+.signupForm{
+    border: 1px solid #aaa;
+    height: 360px;
+    margin : auto;
+    margin-top: 50px;
+    padding: 50px;
+    padding-top: 10px;
+}
+
+h4{
+    text-align: center;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 10px;;
+}
+
