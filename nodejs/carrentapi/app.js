@@ -22,7 +22,7 @@
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header(
 			"Access-Control-Allow-Headers",
-			"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+			"Origin, X-Requested-With, Content-Type, Accept, Authorisation"
 		);
 		if (req.method === "OPTIONS") {
 			res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
@@ -40,6 +40,7 @@
 	const CarBrandRoutes	= require("./routes/carbrand.js"); 	
 	const CarModelRoutes	= require("./routes/carmodel.js"); 	
 	const CarMasterRoutes	= require("./routes/carmaster.js"); 	
+	const Transactions		= require("./routes/transactions.js"); 	
 
 	app.use("/api/users",UsersRoutes);
 
@@ -48,6 +49,7 @@
 	app.use("/api/carbrand",CarBrandRoutes);
 	app.use("/api/carmodel",CarModelRoutes);
 	app.use("/api/carmaster",CarMasterRoutes);
+	app.use("/api/transactions",Transactions);
 
 
 

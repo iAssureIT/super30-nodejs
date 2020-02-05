@@ -2,6 +2,8 @@ const mongoose 	= require('mongoose');
 const Users 	= require('../models/users.js');
 const bcrypt    = require('bcrypt');
 var jwt = require('jsonwebtoken');
+const JWT_SECRET_KEY = 'secret';
+
 
 exports.signup = (req,res,next)=>{
     console.log("req.body = ", req.body);
@@ -54,27 +56,27 @@ exports.signup = (req,res,next)=>{
 
 
 exports.login = (req,res,next) => {
-    console.log("login body = ", req.body);
+    // console.log("login body = ", req.body);
 
-    Users.findOne({"profile.email" : req.body.userid})
+    Users.findOne({"profile.email" : req.body.email})
         .then(response => {
-            console.log("Response login = ", response);
+            // console.log("Response login = ", response);
             if(response){
                 var storedPwd = response.services.password.bcrypt; 
 
                 bcrypt.compare(req.body.password, storedPwd, function(err,rslt){
                     if(rslt){
                         var token = jwt.sign({
-                                        email: req.body.userid,
+                                        email: req.body.email,
                                         user_id : response._id,
                                         password : req.body.password
                                     }, 
-                                    'secret',
+                                    JWT_SECRET_KEY,
                                     {
                                         expiresIn : "7d"
                                     });
                         
-                        console.log("token = ",token);
+                        // console.log("token = ",token);
 
                         Users.update(
                             {_id : response._id},
@@ -85,10 +87,11 @@ exports.login = (req,res,next) => {
                                 }}
                             }
                         )
-                        .then(response => {
+                        .then(updtRes => {
                             res.status(200).json({
                                 message : "Successfully Logged In",
-                                token : token
+                                token : token,
+                                roles : response.roles,
                             })
                         })
                         .catch( (err) => {

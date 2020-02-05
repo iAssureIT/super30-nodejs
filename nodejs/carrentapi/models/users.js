@@ -15,6 +15,7 @@ const usersSchema = mongoose.Schema({
             email       : String,
             phone       : String,
         },
+        roles : [],
         createdAt 		: Date,
         createdBy 		: String
 });
