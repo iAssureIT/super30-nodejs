@@ -1,16 +1,23 @@
 .loginForm{
     border: 1px solid #aaa;
-    height: 270px;
+    height: 450px;
     margin : auto;
     margin-top: 50px;
     padding: 50px;
     padding-top: 10px;
+    background-color: #fff;
 }
 
 h4{
     text-align: center;
     border-bottom: 1px solid #aaa;
-    margin-bottom: 100px;
+    margin-bottom: 200px;
     padding-bottom: 20px;
 }
 
+.fieldWrapper{
+    margin-top: 70px;
+}
+.fieldWrapper button{
+    margin-top: 20px;   
+}

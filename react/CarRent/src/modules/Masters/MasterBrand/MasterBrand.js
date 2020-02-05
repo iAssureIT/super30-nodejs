@@ -18,6 +18,8 @@ export default class MasterBrand extends Component{
 	}
 
 	componentDidMount(){
+		// Axios.defaults.headers.common['Authorisation'] = "Bearer " + localStorage.getItem("token");
+
 		if(this.props.params.type === "brand"){
 			this.setState({brand_id : this.props.params.id, action:"Update"});
 			this.getOneCarBrand(this.props.params.id);
@@ -26,8 +28,14 @@ export default class MasterBrand extends Component{
 	}
 
 	getOneCarBrand(brand_id){
+		const options = {
+				headers :  {
+								'Content-Type': 'application/json',
+                            	'Authorisation': 'Bearer ' + localStorage.getItem("token"),
+                        	}
+              };
 
-		Axios.get("http://localhost:3003/api/carbrand/get/one/"+brand_id)
+		Axios.get("http://localhost:3003/api/carbrand/get/one/"+brand_id, options)
 			.then(response => {
 				if(response.data){
 					console.log("response.data = ",response.data);
@@ -42,7 +50,14 @@ export default class MasterBrand extends Component{
 	}
 
 	getCarBrands(){
-		Axios.get("http://localhost:3003/api/carbrand/get/list")
+		const options = {
+				headers :  {
+								'Content-Type': 'application/json',
+                            	'Authorisation': 'Bearer ' + localStorage.getItem("token"),
+                        	}
+              };
+
+		Axios.get("http://localhost:3003/api/carbrand/get/list", options)
 			.then(response => {
 				console.log(response.data);
 				this.setState({allBrands : response.data.carBrands });
@@ -157,7 +172,7 @@ export default class MasterBrand extends Component{
 						{/* ===========  Table ============ */} 
 						<div className="col-lg-6 col-lg-offset-3 col-md-12 col-sm-12 col-xs-12">
 							<h4> Car Brands </h4>
-							{this.state.allBrands.length > 0
+							{this.state.allBrands && this.state.allBrands.length > 0
 							 ?
 								<table className="table table-hovered table-bordered table-stripped ">
 									<thead>

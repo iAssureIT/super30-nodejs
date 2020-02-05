@@ -1,0 +1,81 @@
+db.transactions.insert({
+	user_id 	: "5e366e1c5bd8a68b45bd9ec0,
+	car_id 		: "5e2449bc0cb5f92f1bea4599",
+	orderDate 	: "10/02/2020",
+	orderNum 	: 123,
+	pickupDate 	: "14/02/2020",
+	amount 		: 10000,
+})
+
+
++-----------+-----------+-------------+------------+---------------+--------+ 
+| Order Num | Oder Date | Client Name | Car Number | Car Model     | Amount |
++-----------+-----------+-------------+------------+---------------+--------+ 
+|   001     | 01/01/20  | A Naik 	  | MH20AB1234 | Toyota Innova |   5000 |
++-----------+-----------+-------------+------------+---------------+--------+ 
+|   002     | 03/01/20  | P Toke 	  | MH20AB1234 | Toyota Innova |   5000 |
++-----------+-----------+-------------+------------+---------------+--------+ 
+|   003     | 05/01/20  | J Khedkar   | MH20AB1234 | Toyota Innova |   5000 |
++-----------+-----------+-------------+------------+---------------+--------+ 
+|   004     | 09/01/20  | S Sutaar 	  | MH20AB1234 | Toyota Innova |   5000 |
++-----------+-----------+-------------+------------+---------------+--------+ 
+|       TOTAL Orders = 4                           | Total Amount  = 20,000 |
++--------------------------------------------------+------------------------+ 
+
+
+
+transArr = [1,2,3,4,.....400]
+for(let i=0; i<transArr.length; i++){
+	user_id = transArr[i].user_id;
+	from Users collection, get user name. 
+
+	car_id = transArr[i].car_id;
+	from car collection, get car details
+
+	print table row;
+}
+
+
+
+
+
+
+db.carmasters.insert({
+	"carCategory" : "5e22b448ab8ff640b8381f78-Sedan",
+	"carBrand" : "BMW",
+	"carModel" : "X3",
+	"vehicleNumber" : "MH-12-AB-1234",
+	"totalSeats" : "4+1",
+	"transmission" : "automatic",
+	"registrationValidityDate" : "2022-01-01",
+	"regstrationPic" : "",
+	"insuranceValidityDate" : "2025-12-01",
+	"insurancePic" : "",
+	"createdAt" : new Date(),
+	"createdBy" : "Ashish Naik",
+})
+
+
+
+
+
+
+
+
+
+
+db.users.insert({
+	"services" : {
+		"password" : {
+			"bcrypt" : "$2b$10$y7GzxU.YHpDyCMl8FLWSluDDnahIOZZ8s22U2B5Lj2f39H5RPytkC"
+		}
+	},
+	"loginTokens" : [
+	],
+	"profile" : {
+		"firstName" : "Prince",
+		"lastName" : "Khandelwal",
+		"email" : "prince@khandelwal.com",
+		"phone" : "9923393733"
+	},
+})

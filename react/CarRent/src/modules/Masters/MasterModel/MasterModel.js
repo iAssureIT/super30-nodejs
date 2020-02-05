@@ -28,7 +28,14 @@ export default class MasterBrand extends Component{
 	}
 
 	getOneCarModel(brand_id){
-		Axios.get("http://localhost:3003/api/carmodel/get/one/"+brand_id)
+		const options = {
+				headers :  {
+								'Content-Type': 'application/json',
+                            	'Authorisation': 'Bearer ' + localStorage.getItem("token"),
+                        	}
+              };
+
+		Axios.get("http://localhost:3003/api/carmodel/get/one/"+brand_id, options)
 			.then(response => {
 				if(response.data){
 					console.log("getOneCarModel = ",response.data);
@@ -46,7 +53,14 @@ export default class MasterBrand extends Component{
 	}
 
 	getCarModels(){
-		Axios.get("http://localhost:3003/api/carmodel/get/list")
+		const options = {
+				headers :  {
+								'Content-Type': 'application/json',
+                            	'Authorisation': 'Bearer ' + localStorage.getItem("token"),
+                        	}
+              };
+
+		Axios.get("http://localhost:3003/api/carmodel/get/list",options)
 			.then(response => {
 				console.log("getCarModels = ", response.data);
 				this.setState({allModels : response.data.carModels});
@@ -58,7 +72,14 @@ export default class MasterBrand extends Component{
 	}
 
 	getCarBrands(){
-		Axios.get("http://localhost:3003/api/carbrand/get/list/atoz")
+		const options = {
+				headers :  {
+								'Content-Type': 'application/json',
+                            	'Authorisation': 'Bearer ' + localStorage.getItem("token"),
+                        	}
+              };
+
+		Axios.get("http://localhost:3003/api/carbrand/get/list/atoz",options)
 			.then(response => {
 				console.log("getCarBrands = ", response.data);
 				this.setState({allBrands : response.data.carBrands});
@@ -124,6 +145,13 @@ export default class MasterBrand extends Component{
 		  cancelButtonText: 'No, keep it'
 		}).then((result) => {
 		  if (result.value) {
+
+		const options = {
+				headers :  {
+								'Content-Type': 'application/json',
+                            	'Authorisation': 'Bearer ' + localStorage.getItem("token"),
+                        	}
+              };
 
 			Axios.post("http://localhost:3003/api/carmodel/delete",formValues)
 				.then(response =>{
