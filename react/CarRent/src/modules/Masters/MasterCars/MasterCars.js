@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
+import S3 from 'react-aws-s3';
 
 import "./MasterCars.css";
+
 
 export default class MasterCars extends Component{
 
@@ -10,25 +12,39 @@ export default class MasterCars extends Component{
 		super();
 
 		this.state = {
-			carCategory : "",
-			carBrand : "",
-			carModel : "",
-			vehicleNumber 	: "",
-			totalSeats 		: "",
-			transmission 	: "",
+			carCategory 		: "",
+			carBrand 			: "",
+			carModel 			: "",
+			vehicleNumber 		: "",
+			totalSeats 			: "",
+			transmission 		: "",
 			registrationPic 	: [],
-			insurancePic 			: "",
+			insurancePic 		: [],
 			registrationValidityDate : "",
 			insuranceValidityDate 	 : "",
-			allCategories : [],
-			allBrands : [],
-			allModels : [],
-			action: "Insert",
-			fileArray : [],
+			allCategories 		: [],
+			allBrands 			: [],
+			allModels 			: [],
+			action				: "Insert",
+			fileArray 			: [],
+			s3config : {
+			    bucketName	: 'windfaller',
+			    dirName		: 'super30Batch1', /* optional */
+			    region 		: 'ap-south-1',
+			    accessKeyId 	: process.env.REACT_APP_ACCESSKEYID,
+			    secretAccessKey	: process.env.REACT_APP_SECRETACCESSKEY,
+			}
 		}
+
+
+			console.log("process.env.REACT_APP_ACCESSKEYID = ", process.env.REACT_APP_ACCESSKEYID);
+			console.log("process.env.REACT_APP_SECRETACCESSKEY = ", process.env.REACT_APP_SECRETACCESSKEY);
+
 	}
 
 	componentDidMount(){
+		console.log("s3config = ", this.state.s3config);
+
 		this.getAllCategories();
 		this.getAllBrands();
 	}
@@ -106,24 +122,36 @@ export default class MasterCars extends Component{
 	}
 
 	uploadInsurancePic(event){
-		var files = event.currentTarget.files;
-		var formValues = new FormData();
-		formValues.append("insurancePics",files);
+		var newFileName = event.currentTarget.files[0];
 
-		Axios.post("http://localhost:3003/api/carMaster/post-insimage", formValues)
-			.then(response=>{
-				console.log("file upload response = ", response.data);
+		const ReactS3Client = new S3(this.state.s3config);
+
+		ReactS3Client
+			.uploadFile(newFileName)
+			.then(uploadeds3file => {
+				console.log("uploadeds3file = ", uploadeds3file)
 				var fileArray = this.state.insurancePic; 
-				fileArray.push(response.data.filepath);
-				this.setState({registrationPic : fileArray});
-
-				console.log("registrationPic = ",this.state.registrationPic);
+				fileArray.push(uploadeds3file.location);
+				this.setState({insurancePic : fileArray});
 			})
-			.catch(error=>{
-				console.log("Error while uploading file", error);
-				Swal.fire('Oops...', 'Something went wrong!', 'error');
-			});		
+    		.catch(err => console.error(err))
+	}
 
+
+	deleteInsurancePic(event){
+		var fileName = event.currentTarget.id;
+
+		const ReactS3Client = new S3(this.state.s3config);
+
+		ReactS3Client
+			.deleteFile("5CDcV9w6EAAvcz97XQfoCr.png")
+			.then(deletedS3file => {
+				console.log("deletedS3file = ", deletedS3file)
+				var fileArray = this.state.insurancePic; 
+				var filteredAry = fileArray.filter(e => e !== fileName)
+				this.setState({insurancePic : filteredAry});
+			})
+    		.catch(err => console.error(err))
 	}
 
 	handleSubmit(event){
@@ -136,8 +164,8 @@ export default class MasterCars extends Component{
 			vehicleNumber 	: this.state.vehicleNumber,
 			totalSeats 		: this.state.totalSeats,
 			transmission 	: this.state.transmission,
-			registrationPic 	: this.state.registrationPic,
-			insurancePic 	: this.state.insurancePic,
+			registrationPic 		 : this.state.registrationPic,
+			insurancePic 			 : this.state.insurancePic,
 			registrationValidityDate : this.state.registrationValidityDate,
 			insuranceValidityDate 	 : this.state.insuranceValidityDate,
 			action 					 : this.state.action,
@@ -151,7 +179,6 @@ export default class MasterCars extends Component{
 				console.log("Error while saving car Master", error);
 				Swal.fire('Oops...', 'Something went wrong!', 'error')
 			});		
-
 
 	}
 
@@ -398,6 +425,23 @@ export default class MasterCars extends Component{
 						
 						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 							<div className="form-group">
+								{
+									this.state.insurancePic && this.state.insurancePic.length>0
+									?
+										this.state.insurancePic.map( (elem,index)=>{
+											return(
+												<div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+													<img src={elem} alt="" className="regPic"/>
+													<div className="delImage" title="Delete This Image" 
+														id={elem}
+														onClick={this.deleteInsurancePic.bind(this)}
+													> &times; </div> 
+												</div>
+											)
+										} )	
+									:
+										null
+								}
 							</div>
 						</div>						
 						

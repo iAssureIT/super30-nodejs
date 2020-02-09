@@ -12,6 +12,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 // import 'jquery-validation';
 // import $ from 'jquery';
 
+console.log("process.env.REACT_APP_ACCESSKEYID = ", process.env.REACT_APP_ACCESSKEYID);
+console.log("process.env.REACT_APP_SECRETACCESSKEY = ", process.env.REACT_APP_SECRETACCESSKEY);
+
+
 function App() {
   return (
     <div className="App container-fluid">

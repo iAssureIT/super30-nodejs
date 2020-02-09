@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import Axios from 'axios'; 
 import Swal from 'sweetalert2';
 
+import {connect} from "react-redux";
+
+
 import './MasterBrand.css';
 
-export default class MasterBrand extends Component{
+class MasterBrand extends Component{
 
 	constructor(props){
 		super(props);
@@ -88,7 +91,9 @@ export default class MasterBrand extends Component{
 				console.log("response = ", response.data);
 				if(this.state.action === "Insert"){
 					Swal.fire('Congrats!','Car Brand Submitted Successfully!' , 'success');	
+					this.props.sendActivityLog("Car Brand "+ formValues.carBrand +" Added");
 				}else{
+					this.props.sendActivityLog("Car Brand Updated");
 					Swal.fire('Congrats!','Car Brand Updated Successfully!' , 'success');	
 					this.props.history.push("/master-brand-model");
 				}
@@ -172,6 +177,9 @@ export default class MasterBrand extends Component{
 						{/* ===========  Table ============ */} 
 						<div className="col-lg-6 col-lg-offset-3 col-md-12 col-sm-12 col-xs-12">
 							<h4> Car Brands </h4>
+							
+							<h3> {this.props.actLog} </h3>
+
 							{this.state.allBrands && this.state.allBrands.length > 0
 							 ?
 								<table className="table table-hovered table-bordered table-stripped ">
@@ -221,6 +229,22 @@ export default class MasterBrand extends Component{
 			</section>
 		);
 	}
-
-
 }
+
+const mapStateToProps = (state)=>{
+	return {
+		actLog : state.actLog,
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		sendActivityLog : (aLog)=>dispatch({
+			type : "SET_ACTIVITY_LOG",
+			aLog : aLog,
+		}),
+
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MasterBrand);
